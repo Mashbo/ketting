@@ -144,14 +144,18 @@ export default class Ketting {
    * This function doesn't do any HTTP requests. The uri is optional. If it's
    * not specified, it will return the bookmark resource.
    */
-  getResource(uri?: string): Resource {
+  getResource(uri?: string, skipCache?: boolean): Resource {
 
     if (typeof uri === 'undefined') {
       uri = '';
     }
     uri = resolve(this.bookMark, uri);
-
-    if (!this.resourceCache[uri]) {
+    
+    if (typeof uri === 'undefined') {
+      skipCache = false;
+    }
+    
+    if (!this.resourceCache[uri] || skipCache) {
       this.resourceCache[uri] = new Resource(this, uri);
     }
 
